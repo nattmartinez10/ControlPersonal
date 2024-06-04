@@ -66,12 +66,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 textStyle: TextStyle(fontSize: 18),
               ),
             ),
-            TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/register');
-              },
-              child: Text('Create an account'),
-            ),
           ],
         ),
       ),
