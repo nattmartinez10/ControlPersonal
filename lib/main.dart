@@ -5,7 +5,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:personal/servicios/api_servicio.dart';
 import 'pantallas/comun/login.dart';
-import 'pantallas/comun/registro.dart';
 import 'pantallas/UC/menu.dart';
 import 'pantallas/UC/manejar_usuarios.dart';
 import 'pantallas/UC/manejar_clientes.dart';
@@ -79,7 +78,6 @@ class _RemotePersonnelControlAppState extends State<RemotePersonnelControlApp> {
       initialRoute: '/',
       routes: {
         '/': (context) => LoginScreen(),
-        '/register': (context) => RegisterScreen(),
         '/menu': (context) => MenuScreen(),
         '/manageUsers': (context) => ManageUsersScreen(),
         '/manageClients': (context) => ManageClientsScreen(),
