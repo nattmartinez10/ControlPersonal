@@ -14,7 +14,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   void _register() {
     print('Registered as ${_nameController.text} (${_emailController.text}) with role $_role');
-    Navigator.pushReplacementNamed(context, _role == 'UC' ? '/manageUsers' : '/sendReport');
+    Navigator.pushReplacementNamed(context, _role == 'UC' ? '/menu' : '/sendReport');
   }
 
   @override
@@ -22,6 +22,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Register'),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -73,7 +74,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               child: Text('Register'),
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                textStyle: TextStyle(fontSize: 18),
               ),
             ),
           ],
@@ -82,3 +82,5 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 }
+
+

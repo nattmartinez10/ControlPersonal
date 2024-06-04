@@ -17,7 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
     } else {
       // Lógica para la web
       if (_emailController.text == 'a@a.com' || _emailController.text == 'b@a.com') {
-        Navigator.pushReplacementNamed(context, '/manageUsers');
+        Navigator.pushReplacementNamed(context, '/menu');
       } else {
         // Manejo de error
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -31,13 +31,16 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text('Team Tracker Solutions'),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Image.asset('assets/images/logo.png', height: 100),
+            SizedBox(height: 20),
             TextField(
               controller: _emailController,
               decoration: InputDecoration(
@@ -75,4 +78,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-
