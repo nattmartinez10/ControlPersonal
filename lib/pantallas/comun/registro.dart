@@ -13,7 +13,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String _role = Platform.isAndroid || Platform.isIOS ? 'US' : 'UC'; // Default role based on platform
 
   void _register() {
-    // Dummy register logic
     print('Registered as ${_nameController.text} (${_emailController.text}) with role $_role');
     Navigator.pushReplacementNamed(context, _role == 'UC' ? '/manageUsers' : '/sendReport');
   }
