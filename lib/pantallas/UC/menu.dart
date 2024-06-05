@@ -16,9 +16,13 @@ class MenuScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.pushNamed(context, '/manageUsers');
               },
-              child: Text('Manage Users'),
+              child: Text('Manage Users',
+                  style: TextStyle(
+                      color:
+                          Colors.white)), // Cambiar el color del texto a blanco
               style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                padding: EdgeInsets.symmetric(horizontal: 55, vertical: 20),
+                backgroundColor: Colors.indigo,
               ),
             ),
             SizedBox(height: 20),
@@ -26,9 +30,13 @@ class MenuScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.pushNamed(context, '/manageClients');
               },
-              child: Text('Manage Clients'),
+              child: Text('Manage Clients',
+                  style: TextStyle(
+                      color:
+                          Colors.white)), // Cambiar el color del texto a blanco
               style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                backgroundColor: Colors.indigo,
               ),
             ),
             SizedBox(height: 20),
@@ -36,9 +44,12 @@ class MenuScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.pushNamed(context, '/evaluateReports');
               },
-              child: Text('Evaluate Reports'),
+              child: Text('Evaluate Reports',
+                  // Cambiar el color del texto a blanco
+                  style: TextStyle(color: Colors.white)),
               style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                padding: EdgeInsets.symmetric(horizontal: 45, vertical: 20),
+                backgroundColor: Colors.indigo,
               ),
             ),
           ],
@@ -47,4 +58,3 @@ class MenuScreen extends StatelessWidget {
     );
   }
 }
-

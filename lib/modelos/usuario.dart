@@ -1,35 +1,39 @@
-class Usuario {
-  final int id;
-  final String nombre;
-  final String correo;
-  final String clave;
-  final String rol;
+class User {
+  int? id;
+  String? name;
+  String? type;
+  String? email;
+  String? password;
+  String? createdTime;
 
-  Usuario({
-    required this.id,
-    required this.nombre,
-    required this.correo,
-    required this.clave,
-    required this.rol,
+  User({
+    this.id,
+    this.name,
+    this.type,
+    this.email,
+    this.password,
+    this.createdTime,
   });
 
-  factory Usuario.fromJson(Map<String, dynamic> json) {
-    return Usuario(
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
       id: json['id'],
-      nombre: json['nombre'],
-      correo: json['correo'],
-      clave: json['clave'],
-      rol: json['rol'],
+      name: json['name'],
+      type: json['type'],
+      email: json['email'],
+      password: json['password'],
+      createdTime: json['createdtime'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'nombre': nombre,
-      'correo': correo,
-      'clave': clave,
-      'rol': rol,
+      'name': name,
+      'type': type,
+      'email': email,
+      'password': password,
+      'createdTime': createdTime,
     };
   }
 }
