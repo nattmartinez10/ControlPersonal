@@ -183,7 +183,6 @@ class _ManageClientsScreenState extends State<ManageClientsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text('Manejo de Clientes'),

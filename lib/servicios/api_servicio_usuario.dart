@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '/modelos/usuario.dart';
 
 class UserService {
-  final String apiUrl =
+  static const String apiUrl =
       'https://api-generator.retool.com/tpjLQ5/datausersfinaaal';
 
   Future<List<User>> fetchUsers() async {
@@ -48,4 +48,20 @@ class UserService {
       throw Exception('Failed to delete user');
     }
   }
+
+  static Future<User?> getUserByEmail(String email) async {
+    try {
+      final response = await http.get(Uri.parse('$apiUrl?email=$email'));
+      if (response.statusCode == 200) {
+        List<dynamic> users = json.decode(response.body);
+        if (users.isNotEmpty) {
+          return User.fromJson(users[0]);
+        }
+      }
+    } catch (e) {
+      print('Error fetching user: $e');
+    }
+    return null;
+  }
 }
+

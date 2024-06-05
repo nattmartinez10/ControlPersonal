@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'dart:io' show Platform;
+import 'package:personal/pantallas/US/reportes.dart';
+import '/servicios/api_servicio_usuario.dart';
+import '/modelos/usuario.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -14,20 +16,31 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _isObscure = true;
 
-  void _login() {
-    if (Platform.isWindows || Platform.isMacOS) {
-      if (_emailController.text == 'a@a.com' ||
-          _emailController.text == 'b@a.com') {
+  Future<void> _login() async {
+  if (_formKey.currentState!.validate()) {
+    User? user = await UserService.getUserByEmail(_emailController.text);
+    if (user != null && user.password == _passwordController.text) {
+      if (user.type == 'US' && !kIsWeb) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SendReportScreen(user: user),
+          ),
+        );
+      } else if (user.type == 'UC' && kIsWeb) {
         Navigator.pushReplacementNamed(context, '/menu');
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Access Denied for non-UC users on web'),
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Access denied for this user type on this platform')),
+        );
       }
     } else {
-      Navigator.pushReplacementNamed(context, '/sendReport');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Invalid email or password')),
+      );
     }
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -83,8 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildMainBody(Size size) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment:
-          size.width > 600 ? MainAxisAlignment.center : MainAxisAlignment.start,
+      mainAxisAlignment: size.width > 600 ? MainAxisAlignment.center : MainAxisAlignment.start,
       children: [
         size.width > 600
             ? Container()
@@ -125,15 +137,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextFormField(
                   style: TextStyle(color: Colors.black),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.email,
-                        color: Color(0xFF1A237E)), // Icono azul oscuro
+                    prefixIcon: Icon(Icons.email, color: Color(0xFF1A237E)), // Icono azul oscuro
                     hintText: 'Email',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Color(0xFF1A237E)), // Borde azul oscuro
+                      borderSide: BorderSide(color: Color(0xFF1A237E)), // Borde azul oscuro
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                     ),
                   ),
@@ -155,8 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: _passwordController,
                   obscureText: _isObscure,
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.lock_open,
-                        color: Color(0xFF1A237E)), // Icono azul oscuro
+                    prefixIcon: Icon(Icons.lock_open, color: Color(0xFF1A237E)), // Icono azul oscuro
                     suffixIcon: IconButton(
                       icon: Icon(
                         _isObscure ? Icons.visibility : Icons.visibility_off,
@@ -173,8 +182,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Color(0xFF1A237E)), // Borde azul oscuro
+                      borderSide: BorderSide(color: Color(0xFF1A237E)), // Borde azul oscuro
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                     ),
                   ),
@@ -195,19 +203,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 55,
                   child: ElevatedButton(
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                          Color(0xFF1A237E)), // Color azul oscuro
+                      backgroundColor: MaterialStateProperty.all(Color(0xFF1A237E)), // Color azul oscuro
                       shape: MaterialStateProperty.all(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
                       ),
                     ),
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        _login();
-                      }
-                    },
+                    onPressed: _login,
                     child: Text(
                       'Login',
                       style: TextStyle(color: Colors.white), // Texto blanco
