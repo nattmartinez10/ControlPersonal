@@ -9,8 +9,8 @@ import 'pantallas/UC/menu.dart';
 import 'pantallas/UC/manejar_usuarios.dart';
 import 'pantallas/UC/manejar_clientes.dart';
 import 'pantallas/UC/evaluar_reporte.dart';
-import 'pantallas/US/enviar_reporte.dart';
-import 'pantallas/US/ver_reporte.dart';
+import 'pantallas/US/reportes.dart';
+//import 'pantallas/US/ver_reporte.dart';
 import 'modelos/reporte.dart';
 
 void main() async {
@@ -82,9 +82,10 @@ class _RemotePersonnelControlAppState extends State<RemotePersonnelControlApp> {
         '/manageUsers': (context) => ManageUsersScreen(),
         '/manageClients': (context) => ManageClientsScreen(),
         '/evaluateReports': (context) => EvaluateReportsScreen(),
-        '/sendReport': (context) => SendReportScreen(),
-        '/viewReports': (context) => ViewReportsScreen(),
+        //'/viewReports': (context) => ViewReportsScreen(),
       },
     );
   }
 }
+
+

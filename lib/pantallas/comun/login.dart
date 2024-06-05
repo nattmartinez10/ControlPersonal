@@ -1,6 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:personal/pantallas/US/reportes.dart';
+import '/servicios/api_servicios_usuario.dart';
+import '/modelos/usuario.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -13,19 +16,31 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _isObscure = true;
 
-  void _login() {
-    if (!kIsWeb) {
-      Navigator.pushReplacementNamed(context, '/sendReport');
-    } else {
-      if (_emailController.text == 'a@a.com' || _emailController.text == 'b@a.com') {
+  Future<void> _login() async {
+  if (_formKey.currentState!.validate()) {
+    User? user = await UserApi.getUserByEmail(_emailController.text);
+    if (user != null && user.password == _passwordController.text) {
+      if (user.type == 'US' && !kIsWeb) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SendReportScreen(user: user),
+          ),
+        );
+      } else if (user.type == 'UC' && kIsWeb) {
         Navigator.pushReplacementNamed(context, '/menu');
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Access Denied for non-UC users on web'),
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Access denied for this user type on this platform')),
+        );
       }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Invalid email or password')),
+      );
     }
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -195,11 +210,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        _login();
-                      }
-                    },
+                    onPressed: _login,
                     child: Text(
                       'Login',
                       style: TextStyle(color: Colors.white), // Texto blanco
