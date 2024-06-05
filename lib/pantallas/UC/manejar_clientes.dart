@@ -269,3 +269,129 @@ class _ManageClientsScreenState extends State<ManageClientsScreen> {
     );
   }
 }
+
+class ClientDetailScreen extends StatefulWidget {
+  final Clientes cliente;
+
+  ClientDetailScreen({required this.cliente});
+
+  @override
+  _ClientDetailScreenState createState() => _ClientDetailScreenState();
+}
+
+class _ClientDetailScreenState extends State<ClientDetailScreen> {
+  final _formKey = GlobalKey<FormState>();
+  late TextEditingController _idController;
+  late TextEditingController _nameController;
+
+  @override
+  void initState() {
+    super.initState();
+    _idController = TextEditingController(text: widget.cliente.id.toString());
+    _nameController = TextEditingController(text: widget.cliente.clientName);
+  }
+
+  Future<void> updateCliente() async {
+    final updatedCliente = Clientes(
+      id: int.tryParse(_idController.text),
+      clientName: _nameController.text,
+      createdIn: widget.cliente.createdIn, // Asegurarse de mantener createdIn
+    );
+
+    // Si el ID ha cambiado, crea un nuevo registro y elimina el antiguo
+    if (updatedCliente.id != widget.cliente.id) {
+      final createResponse = await http.post(
+        Uri.parse('https://api-generator.retool.com/D85qYo/clients'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(updatedCliente.toJson()),
+      );
+
+      if (createResponse.statusCode == 201) {
+        final deleteResponse = await http.delete(
+          Uri.parse(
+              'https://api-generator.retool.com/D85qYo/clients/${widget.cliente.id}'),
+        );
+
+        if (deleteResponse.statusCode == 200) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Cliente actualizado correctamente')));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Error al eliminar el cliente antiguo')));
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error al crear el nuevo cliente')));
+      }
+    } else {
+      final response = await http.put(
+        Uri.parse(
+            'https://api-generator.retool.com/D85qYo/clients/${widget.cliente.id}'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(updatedCliente.toJson()),
+      );
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Cliente actualizado correctamente')));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error al actualizar el cliente')));
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Detalles del Cliente'),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextFormField(
+                controller: _idController,
+                decoration: InputDecoration(labelText: 'ID'),
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingresa un ID';
+                  }
+                  if (int.tryParse(value) == null) {
+                    return 'Por favor ingresa un ID válido';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 10),
+              TextFormField(
+                controller: _nameController,
+                decoration: InputDecoration(labelText: 'Nombre'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingresa un nombre';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    updateCliente();
+                  }
+                },
+                child: Text('Actualizar'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
