@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-//para crear un objeto tipo cliente
 class Clientes {
   int? id;
   String? clientName;
   String? createdIn;
 
   Clientes({this.id, this.clientName, this.createdIn});
-  //to get data from the api and show it in the table
+
   factory Clientes.fromJson(Map<String, dynamic> json) {
     return Clientes(
       id: json['id'],
@@ -17,7 +16,7 @@ class Clientes {
       createdIn: json['createdIn'],
     );
   }
-  //to send data to the api and change de db
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -67,37 +66,47 @@ class _ManageClientsScreenState extends State<ManageClientsScreen> {
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              child: DataTable(
-                columns: [
-                  DataColumn(label: Text('ID')),
-                  DataColumn(label: Text('Nombre')),
-                  DataColumn(label: Text('Acción')),
-                ],
-                rows: _clientes
-                    .map(
-                      (cliente) => DataRow(cells: [
-                        DataCell(Text(cliente.id.toString())),
-                        DataCell(Text(cliente.clientName ?? '')),
-                        DataCell(
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      ClientDetailScreen(cliente: cliente),
+          : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Center(
+                      child: DataTable(
+                        columns: [
+                          DataColumn(label: Text('ID')),
+                          DataColumn(label: Text('Nombre')),
+                          DataColumn(label: Text('Acción')),
+                        ],
+                        rows: _clientes
+                            .map(
+                              (cliente) => DataRow(cells: [
+                                DataCell(Text(cliente.id.toString())),
+                                DataCell(Text(cliente.clientName ?? '')),
+                                DataCell(
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ClientDetailScreen(
+                                                  cliente: cliente),
+                                        ),
+                                      ).then((_) =>
+                                          fetchClientes()); // Actualizar la lista al regresar
+                                    },
+                                    child: Text('Ver detalles'),
+                                  ),
                                 ),
-                              ).then((_) =>
-                                  fetchClientes()); // Actualizar la lista al regresar
-                            },
-                            child: Text('Ver detalles'),
-                          ),
-                        ),
-                      ]),
-                    )
-                    .toList(),
-              ),
+                              ]),
+                            )
+                            .toList(),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
     );
   }
@@ -112,7 +121,6 @@ class ClientDetailScreen extends StatefulWidget {
   _ClientDetailScreenState createState() => _ClientDetailScreenState();
 }
 
-//para ver y editar los detalles de un cliente (cuando se acciona el boton)
 class _ClientDetailScreenState extends State<ClientDetailScreen> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _idController;

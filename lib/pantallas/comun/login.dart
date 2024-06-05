@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'dart:io' show Platform;
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -14,16 +15,17 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isObscure = true;
 
   void _login() {
-    if (!kIsWeb) {
-      Navigator.pushReplacementNamed(context, '/sendReport');
-    } else {
-      if (_emailController.text == 'a@a.com' || _emailController.text == 'b@a.com') {
+    if (Platform.isWindows || Platform.isMacOS) {
+      if (_emailController.text == 'a@a.com' ||
+          _emailController.text == 'b@a.com') {
         Navigator.pushReplacementNamed(context, '/menu');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('Access Denied for non-UC users on web'),
         ));
       }
+    } else {
+      Navigator.pushReplacementNamed(context, '/sendReport');
     }
   }
 
@@ -81,7 +83,8 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildMainBody(Size size) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: size.width > 600 ? MainAxisAlignment.center : MainAxisAlignment.start,
+      mainAxisAlignment:
+          size.width > 600 ? MainAxisAlignment.center : MainAxisAlignment.start,
       children: [
         size.width > 600
             ? Container()
@@ -122,13 +125,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextFormField(
                   style: TextStyle(color: Colors.black),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.email, color: Color(0xFF1A237E)), // Icono azul oscuro
+                    prefixIcon: Icon(Icons.email,
+                        color: Color(0xFF1A237E)), // Icono azul oscuro
                     hintText: 'Email',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xFF1A237E)), // Borde azul oscuro
+                      borderSide: BorderSide(
+                          color: Color(0xFF1A237E)), // Borde azul oscuro
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                     ),
                   ),
@@ -150,7 +155,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: _passwordController,
                   obscureText: _isObscure,
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.lock_open, color: Color(0xFF1A237E)), // Icono azul oscuro
+                    prefixIcon: Icon(Icons.lock_open,
+                        color: Color(0xFF1A237E)), // Icono azul oscuro
                     suffixIcon: IconButton(
                       icon: Icon(
                         _isObscure ? Icons.visibility : Icons.visibility_off,
@@ -167,7 +173,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xFF1A237E)), // Borde azul oscuro
+                      borderSide: BorderSide(
+                          color: Color(0xFF1A237E)), // Borde azul oscuro
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                     ),
                   ),
@@ -188,7 +195,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 55,
                   child: ElevatedButton(
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Color(0xFF1A237E)), // Color azul oscuro
+                      backgroundColor: MaterialStateProperty.all(
+                          Color(0xFF1A237E)), // Color azul oscuro
                       shape: MaterialStateProperty.all(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
@@ -217,4 +225,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-
