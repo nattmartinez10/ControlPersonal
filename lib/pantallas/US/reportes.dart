@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import '/servicios/api_servicio_reporte.dart'; // Importa las funciones de la API de reportes
 import '/modelos/reporte2.dart'; // Importa el modelo de Reporte
 import '/modelos/usuario.dart'; // Importa el modelo de Usuario
-import 'ver_reporte.dart'; // Importa las funciones de la API de reportes
-
+import 'ver_reporte.dart'; // Importa el modelo de Usuario
 
 class SendReportScreen extends StatefulWidget {
   final User user;
@@ -45,7 +44,7 @@ class _SendReportScreenState extends State<SendReportScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My reports'),
+        title: Text('Send Reports'),
       ),
       body: FutureBuilder<List<Reporte>>(
         future: futureReportes,
@@ -69,7 +68,13 @@ class _SendReportScreenState extends State<SendReportScreen> {
                       print('Report: ${reporte.issue}, ${reporte.description}, ${reporte.creationDate}');
                       return ListTile(
                         title: Text(reporte.issue ?? 'No issue'),
-                        subtitle: Text(reporte.description ?? 'No description'),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(reporte.description ?? 'No description'),
+                            Text('Rating: ${reporte.rating ?? 'Not rated yet'}'),
+                          ],
+                        ),
                         trailing: Text(reporte.creationDate ?? 'No creation date'),
                       );
                     },

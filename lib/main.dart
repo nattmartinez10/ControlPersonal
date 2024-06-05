@@ -22,11 +22,6 @@ void main() async {
     await Hive.initFlutter();
   }
 
-  Hive.registerAdapter(ReportAdapter());
-  await Hive.openBox<Report>('reports');
-
-  // Intentar sincronizar los reportes al inicio de la aplicación
-  await ApiService.syncReports();
 
   runApp(RemotePersonnelControlApp());
 }
@@ -37,17 +32,7 @@ class RemotePersonnelControlApp extends StatefulWidget {
 }
 
 class _RemotePersonnelControlAppState extends State<RemotePersonnelControlApp> {
-  //@override
-  //void initState() {
-  //  super.initState();
-
-  //  Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-   //   if (result != ConnectivityResult.none) {
-    //    ApiService.syncReports();
-    //  }
-   // });
-//  }
-
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

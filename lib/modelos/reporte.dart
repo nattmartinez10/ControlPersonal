@@ -3,21 +3,51 @@ import 'package:hive/hive.dart';
 part 'reporte.g.dart';
 
 @HiveType(typeId: 0)
-class Report extends HiveObject {
+class Reporte {
   @HiveField(0)
-  String description;
+  int id;
 
   @HiveField(1)
-  String client;
+  String idUser;
 
   @HiveField(2)
-  DateTime startTime;
+  String issue;
 
   @HiveField(3)
-  int duration;
+  String rating;
 
   @HiveField(4)
-  bool isSynced;
+  String duration;
 
-  Report({required this.description, required this.client, required this.startTime, required this.duration, this.isSynced = false});
+  @HiveField(5)
+  String idClient;
+
+  @HiveField(6)
+  String idReport;
+
+  @HiveField(7)
+  String startTime;
+
+  @HiveField(8)
+  String description;
+
+  @HiveField(9)
+  String creationDate;
+
+  @HiveField(10)
+  String isSent;
+
+  Reporte({
+    required this.id,
+    required this.idUser,
+    required this.issue,
+    required this.rating,
+    required this.duration,
+    required this.idClient,
+    required this.idReport,
+    required this.startTime,
+    required this.description,
+    required this.creationDate,
+    required this.isSent,
+  });
 }

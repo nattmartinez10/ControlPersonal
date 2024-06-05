@@ -1,20 +1,21 @@
+// modelos/reporte2.dart
 class Reporte {
-  final int id;
-  final String? idUser;
-  final String? issue;
-  final String? rating;
-  final String? duration;
-  final String? idClient;
-  final String? idReport;
-  final String? startTime;
-  final String? description;
-  final String? creationDate;
+  int id;
+  String? issue;
+  String? rating;
+  String? idUser;
+  String? duration;
+  String? idClient;
+  String? idReport;
+  String? startTime;
+  String? description;
+  String? creationDate;
 
   Reporte({
     required this.id,
-    this.idUser,
     this.issue,
     this.rating,
+    this.idUser,
     this.duration,
     this.idClient,
     this.idReport,
@@ -26,24 +27,24 @@ class Reporte {
   factory Reporte.fromJson(Map<String, dynamic> json) {
     return Reporte(
       id: json['id'],
-      idUser: json['idUser'] as String?,
-      issue: json['Issue'] as String?,
-      rating: json['Rating'] as String?,
-      duration: json['Duration'] as String?,
-      idClient: json['idClient'] as String?,
-      idReport: json['idReport'] as String?,
-      startTime: json['Start Time'] as String?,
-      description: json['Description'] as String?,
-      creationDate: json['Creation Date'] as String?,
+      issue: json['Issue'],
+      rating: json['Rating'],
+      idUser: json['idUser'],
+      duration: json['Duration'],
+      idClient: json['idClient'],
+      idReport: json['idReport'],
+      startTime: json['Start Time'],
+      description: json['Description'],
+      creationDate: json['Creation Date'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'idUser': idUser,
       'Issue': issue,
       'Rating': rating,
+      'idUser': idUser,
       'Duration': duration,
       'idClient': idClient,
       'idReport': idReport,
@@ -53,4 +54,6 @@ class Reporte {
     };
   }
 }
+
+
 
